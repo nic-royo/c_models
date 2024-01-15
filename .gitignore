@@ -31,6 +31,6 @@
 *.out
 *.app
 
-data
+c_files
 build
 

@@ -19,13 +19,13 @@ include_directories(${ARMADILLO_INCLUDE_DIRS})
 find_package(MLPACK REQUIRED)
 
 # Add source files
-add_executable(data_preprocessing src/c_data_splitter.cpp)
+add_executable(data_split src/c_data_splitter.cpp)
 add_executable(random_forest src/random_forest.cpp)
 add_executable(ada_boost src/ada_boost.cpp)
 add_executable(knn src/knn.cpp)
 
 
 # Link the libraries to your executable
-target_link_libraries(c_models ${MLPACK_LIBRARIES} ${ARMADILLO_LIBRARIES})
+target_link_libraries(data_split ${MLPACK_LIBRARIES} ${ARMADILLO_LIBRARIES})
 
 
