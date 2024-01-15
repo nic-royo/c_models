@@ -1,10 +1,13 @@
+// code to split the files into labels and feature data, bc thats how MLPack processes it,
+// for both training and testing
+
 #include <mlpack/core.hpp>
 #include <mlpack/core/data/split_data.hpp>
 #include <fstream>
 #include <iostream>
 
 int main() {
-    // Load the dataset
+    // load datasets
     const std::string training_file_name = "/home/nicolas/Desktop/mlpack/data/train_tv_activity.csv";
     const std::string testing_file_name = "/home/nicolas/Desktop/mlpack/data/test_tv_activity.csv";
     
