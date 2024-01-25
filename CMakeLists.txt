@@ -24,6 +24,8 @@ add_executable(random_forest src/random_forest.cpp)
 add_executable(ada_boost src/ada_boost.cpp)
 add_executable(knn src/knn.cpp)
 add_executable(data_preprocess src/data_preprocess.cpp)
+add_executable(attempt src/attempt.cpp)
+
 
 
 # Link the libraries to your executable

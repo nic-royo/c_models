@@ -4,7 +4,6 @@
 
 // mlpack_random_forest --input_model_file rf_model.bin --test_file /home/nicolas/Desktop/c_models/data/c_files/testing_data.csv --test_labels_file /home/nicolas/Desktop/c_models/data/c_files/labels_testing_data.csv --predictions_file predictions_rf.csv
 
-
 #include <mlpack/core.hpp>
 #include <mlpack/methods/random_forest/random_forest.hpp>
 #include <mlpack/core/data/split_data.hpp>
@@ -16,31 +15,42 @@ int main()
 {
     // Load the training data and labels
     arma::mat trainingData;
-    data::Load("training_data.csv", trainingData, true);
+    data::Load("/home/nicolas/Desktop/c_models/data/c_files/training_data.csv", trainingData, true);
 
-    arma::Row<size_t> trainingLabels;
-    data::Load("labels_training_data.csv", trainingLabels, true);
+    arma::Row<size_t> labels;
+    data::Load("/home/nicolas/Desktop/c_models/data/c_files/labels_training_data.csv", labels, true);
+
+    // Create and train RandomForest.
+    RandomForest<> rf(trainingData, labels, 10); // 10 trees
+
+    // Save the trained model
+    {
+        std::ofstream os("rf_model.bin");
+        cereal::BinaryOutputArchive archive(os);
+        archive(rf);
+    }
 
     // Load the testing data and labels
     arma::mat testingData;
-    data::Load("testing_data.csv", testingData, true);
+    data::Load("/home/nicolas/Desktop/c_models/data/c_files/testing_data.csv", testingData, true);
 
-    arma::Row<size_t> testingLabels;
-    data::Load("labels_testing_data.csv", testingLabels, true);
+    // Load the trained model
+    RandomForest<> loadedRf;
+    {
+        std::ifstream is("rf_model.bin");
+        cereal::BinaryInputArchive archive(is);
+        archive(loadedRf);
+    }
 
-    // Train the Random Forest model
-    RandomForest<> rfModel;
-    rfModel.Train(trainingData, trainingLabels);
-
-    // Predict the labels of the test data
+    // Predict the labels for the testing data
     arma::Row<size_t> predictions;
-    rfModel.Classify(testingData, predictions);
+    loadedRf.Classify(testingData, predictions);
 
-    // Calculate and print the accuracy
-    double accuracy = arma::accu(predictions == testingLabels) / double(testingLabels.n_elem);
+    // Calculate accuracy
+    const double accuracy = arma::accu(predictions == labels) / double(labels.n_elem);
+
+    // Print the accuracy
     std::cout << "Accuracy: " << accuracy << std::endl;
 
     return 0;
 }
-
-

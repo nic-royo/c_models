@@ -33,7 +33,7 @@ make
 4. Run the executable
 Replace 'executable_name' with the actual name of the built executable (refer to CMakeLists.txt for the executable names, such as data_preprocessing).
 ```bash
-./c_models
+./random_forest
 ```
 
 
